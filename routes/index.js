@@ -6,7 +6,4 @@ router.get('/', function(req, res) {
   res.render('index', { title: 'Express' });
 });
 
-console.log("index");
-console.log(express.newObj);
-
 module.exports = router;

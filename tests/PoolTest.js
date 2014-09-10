@@ -4,7 +4,7 @@ var redisClient = require("../tools/redisPool");
 
 dbClient.deal(function(client){
 	console.log("mysql test!");
-	client.query('select * from snz_users;', function(err, rows, fields) {
+	client.query('select * from mz_users;', function(err, rows, fields) {
 	  if (err) throw err;
 	  
 	  rows.forEach(function(row) {
@@ -19,13 +19,3 @@ redisClient.deal(function(client){
 		console.log("\n\nreplay:"+reply);
 	});
 });
-
-var userFactory = require("../modules/User");
-var user = userFactory.createUser();
-
-user.setId(1);
-user.setName("MichaelZhao");
-user.setNick("MZ");
-console.log(user.getId());
-console.log(user.getName());
-console.log(user.getNick());

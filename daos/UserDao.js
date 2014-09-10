@@ -1,7 +1,7 @@
 var dbClient = require("../tools/dbPool");
-var userFactory = require("../modules/User");
+var User = require("../modules/User");
 
-UserDao = (function() {
+var UserDao = (function() {
 	var findByIdSql = "select * from mz_users where id=?";
 	var insertSql = "insert into mz_users(name, nick, password, created_at, updated_at) values(?, ?, ?, now(), now())";
 	var updateSql = "update mz_users set ";
@@ -19,7 +19,7 @@ UserDao = (function() {
 	}
 
 	var installModule = function(data){
-		var user = userFactory.createUser();
+		var user = new User();
 		user.setId(data["id"]);
 		user.setName(data["name"]);
 		user.setNick(data["nick"]);
@@ -31,7 +31,7 @@ UserDao = (function() {
 	}
 
 	function UserDao() {}
-	
+
 	/**
 	 * 创建用户信息
 	 * @param user 用户信息
@@ -61,7 +61,7 @@ UserDao = (function() {
 				if (callBack) {
 					result.forEach(function(row){
 						callBack(installModule(row));
-					})
+					});
 				}
 			});
 		});
@@ -69,16 +69,13 @@ UserDao = (function() {
 
 	UserDao.prototype.login = function(nick , pwd, callBack){
 		dbClient.deal(function(client){
-			client.query(loginSql, [nick , pwd], function(err , result){
+			var query = client.query(loginSql, [nick , pwd], function(err , result){
 				if (err) throw err;
-				console.log(result.length);
 				if (callBack) {
 					if(result.length == 0){
 						callBack(null);
 					}else{
-						result.forEach(function(row){
-							callBack(installModule(row));
-						});
+						callBack(installModule(result[0]));
 					}
 				}
 			});
@@ -88,5 +85,5 @@ UserDao = (function() {
 	return UserDao;
 })();
 
-module.exports.createDao = UserDao;
+module.exports = UserDao;
 

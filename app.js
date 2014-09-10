@@ -4,11 +4,7 @@ var favicon = require('static-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
-console.log("add body");
-var routes = require('./routes/index');
-var users = require('./routes/users');
-console.log("message");
+var session = require('express-session');
 
 var app = express();
 
@@ -21,10 +17,19 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
+app.use(session({secret : 'nodeSessionId'}));
+app.use(function(req , res , next){
+    //新增自己的中间健
+    console.log("app require");
+    next();
+});
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
+
+// set route path to find page
+app.use('/', require('./routes/index'));
+app.use('/users', require('./routes/users'));
+app.use('/login', require('./routes/UserController'));
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {

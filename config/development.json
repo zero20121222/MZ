@@ -7,13 +7,13 @@
     "db"   : "mz",
     "poolMax" : 10,
     "timeOut" : 300,
-    "log" : true
+    "log" : false
   },
   "redis" : {
     "host" : "127.0.0.1",
     "port" : "1111",
     "poolMax" : 10,
     "timeOut" : 300,
-    "log" : true
+    "log" : false
   }
 }

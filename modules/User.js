@@ -1,53 +1,42 @@
-User = function(){
-	var pri = {
-		id : null,
-		name : null,
-		nick : null,
-		password : null,
-		createdAt : null,
-		updatedAt : null
-	}
+var BaseUser = require("./BaseUser");
 
-	var pub = {
-		setId : function(id){
-			pri.id = id;
-		},
-		getId : function(){
-			return pri.id;
-		},
-		setName : function(name){
-			pri.name = name;
-		},
-		getName : function(){
-			return pri.name;
-		},
-		setNick : function(nick){
-			pri.nick = nick;
-		},
-		getNick : function(){
-			return pri.nick;
-		},
-		setPassword : function(password){
-			pri.password = password;
-		},
-		getPassword : function(){
-			return pri.password;
-		},
-		setCreatedAt : function(createdAt){
-			pri.createdAt = createdAt;
-		},
-		getCreatedAt : function(){
-			return pri.createdAt;
-		},
-		setUpdatedAt : function(updatedAt){
-			pri.updatedAt = updatedAt;
-		},
-		getUpdatedAt : function(){
-			return pri.updatedAt;
-		}
-	}
+var User = function(){
+	BaseUser.apply(this , arguments);
 
-	return pub;
+	this.password = null;
+	this.createdAt = null;
+	this.updatedAt = null;
 }
 
-module.exports.createUser = User;
+//继承BaseUser对象
+_extend_(User , BaseUser);
+
+User.prototype.setPassword = function(password){
+	this.password = password;
+}
+
+User.prototype.getPassword = function(){
+	return this.password;
+}
+
+User.prototype.setCreatedAt = function(createdAt){
+	this.createdAt = createdAt;
+}
+
+User.prototype.getCreatedAt = function(){
+	return this.createdAt;
+}
+
+User.prototype.setUpdatedAt = function(updatedAt){
+	this.updatedAt = updatedAt;
+}
+
+User.prototype.getUpdatedAt = function(){
+	return this.updatedAt;
+}
+
+User.prototype.toData = function(){
+	return this;
+}
+
+module.exports = User;

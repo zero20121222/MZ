@@ -7,5 +7,23 @@
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
+
+    <div>
+    	<div>User Information</div>
+    	<table>
+    		<tr>
+    			<td>UserName</td>
+    			<td><%= user.name %></td>
+    		</tr>
+    		<tr>
+    			<td>Nick</td>
+    			<td><%= user.nick %></td>
+    		</tr>
+    		<tr>
+    			<td>Type</td>
+    			<td><%= user.type %></td>
+    		</tr>
+    	</table>
+    </div>
   </body>
 </html>

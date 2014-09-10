@@ -1,9 +1,9 @@
-var dbClient = require("../../daos/UserDao");
-var userFactory = require("../../modules/User");
+var UserDao = require("../../daos/UserDao");
+var User = require("../../modules/User");
 var crypto = require("crypto");
 var md5 = crypto.createHash("md5");
 
-var user = userFactory.createUser();
+var user = new User();
 
 user.setName("MichaelZhao");
 user.setNick("MZ");
@@ -18,4 +18,3 @@ userDao.update({"id":1, "nick":"MichaelZhao"});
 userDao.findById(1 , function(user){
 	console.log(user.getName());
 });
-
