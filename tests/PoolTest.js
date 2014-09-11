@@ -3,6 +3,8 @@ var dbClient = require("../tools/dbPool");
 var redisClient = require("../tools/redisPool");
 
 dbClient.deal(function(client){
+
+	console.log(client.beginTransaction);
 	console.log("mysql test!");
 	client.query('select * from mz_users;', function(err, rows, fields) {
 	  if (err) throw err;

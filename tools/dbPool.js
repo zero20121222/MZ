@@ -4,6 +4,8 @@ var config = require("../config/"+env["env"]);
 var mysql = require("mysql");
 var PoolModule = require("generic-pool");
 
+var async = require("async");
+
 var connectParams = {
 	'hostname' : config["mysql"]["host"],
 	'port' : config["mysql"]["port"],
@@ -51,6 +53,46 @@ module.exports.deal = function(dbDeal){
 			throw error;
 		}
 		dbDeal(client);
+		//释放链接
+		dbPool.release(client);
+	});
+}
+
+/**
+ * 实现数据库访问的事务处理
+ * @param dbDeal需要处理的mysql调用操作
+ */
+var transactionDeal = function(dbDeal){
+	dbPool.acquire(function(error , client){
+		if (error) {
+			console.log("Failed to connect host:"+config["mysql"]["host"]);
+			throw error;
+		}
+
+	    // 开启事务处理
+	    client.beginTransaction(function(err) {
+	        if(err) {
+	            throw err;
+	        }
+
+	        async.auto(dbDeal(client) , function(err , value) {
+		        if(err) {
+		            client.rollback(function() {
+		                throw err;
+		            });
+		            return;
+		        }
+
+		        client.commit(function(err) {
+		            if (err) { 
+		                client.rollback(function() {
+		                	throw err;
+		                });
+		            }
+		        });
+		    });
+		});
+
 		//释放链接
 		dbPool.release(client);
 	});
